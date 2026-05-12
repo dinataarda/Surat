@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>A Serious Message</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
@@ -24,9 +24,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* FIX: Auto-scale container biar nggak beda-beda di tiap layar */
+        .main-wrapper {
+            transform: scale(0.85); /* Nge-zoom out dikit biar aman di layar kecil */
+            display: flex; justify-content: center; align-items: center;
+        }
+        @media (max-height: 600px) { .main-wrapper { transform: scale(0.7); } }
+
         .container { position: relative; transition: transform 0.4s ease; }
 
-        /* --- AMPLOP (DIMENSI DIPERBAIKI) --- */
+        /* --- AMPLOP (DIMENSI STABIL) --- */
         .envelope-wrapper {
             position: relative; width: 340px; height: 300px;
             background-color: var(--env-back); 
@@ -59,7 +66,7 @@
         .card-wrapper {
             position: absolute; 
             bottom: 10px; left: 90px; 
-            width: 160px; height: 270px; 
+            width: 160px; height: 275px; 
             perspective: 1200px; z-index: 1; 
             transition: transform 0.4s ease 0.4s, z-index 0s 0.45s, box-shadow 0.4s ease 0.4s; 
         }
@@ -91,7 +98,7 @@
             transform: rotateY(180deg) translateZ(0); 
             border-right: 1px solid #eee; backface-visibility: hidden; 
             display: flex; flex-direction: column; justify-content: flex-start;
-            padding-top: 15px;
+            padding-top: 18px;
         }
 
         .title-keseriusan {
@@ -124,7 +131,7 @@
             position: absolute; top: 145px; left: 50%; transform: translate(-50%, -20%);
             z-index: 6; color: var(--heart-red); font-size: 38px; transition: opacity 0.3s; pointer-events: none;
         }
-        .hint { position: absolute; bottom: -40px; width: 100%; text-align: center; color: #888; font-size: 11px; }
+        .hint { position: absolute; bottom: -50px; width: 100%; text-align: center; color: #888; font-size: 11px; }
 
         /* --- LOGIKA ANIMASI BUKA --- */
         .container.open .envelope-lid { transform: rotateX(180deg); z-index: 0; transition: transform 0.4s ease 0s; }
@@ -139,46 +146,48 @@
 </head>
 <body>
 
-    <div class="container" id="suratArda">
-        <div class="envelope-wrapper" id="amplop">
-            <div class="envelope-lid"></div>
-            <div class="envelope-front"></div>
-            
-            <div class="card-wrapper">
-                <div class="right-page">
-                    <div class="card-content">
-                        <p style="margin-bottom: 5px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 16px; color: var(--heart-red);">Aku butuh jawaban Kamu:</p>
-                        <div class="form-group">
-                            <label class="radio-label">
-                                <input type="radio" name="jawaban" value="terima">
-                                <span class="radio-text"><b>Iya:</b> Ayo kita bangun bareng dari nol.</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="jawaban" value="tolak">
-                                <span class="radio-text"><b>Tidak:</b> Hapus kontak Aku.</span>
-                            </label>
-                        </div>
-                        <button class="btn-kirim" id="tombolKirim">KIRIM JAWABAN</button>
-                        <div class="footer-text">I'm ready to stay, but prepared to walk away.</div>
-                    </div>
-                </div>
+    <div class="main-wrapper">
+        <div class="container" id="suratArda">
+            <div class="envelope-wrapper" id="amplop">
+                <div class="envelope-lid"></div>
+                <div class="envelope-front"></div>
                 
-                <div class="left-cover">
-                    <div class="cover-front">
-                        <h2 style="color: var(--heart-red); font-size: 22px; line-height: 1.2;">Surat dari Arda<br>Untuk Rahayu.</h2>
-                    </div>
-                    <div class="cover-back">
-                        <span class="title-keseriusan">Keseriusan aku!.</span>
+                <div class="card-wrapper">
+                    <div class="right-page">
                         <div class="card-content">
-                            <p>Aku nggak suka buang waktu. ga tau di otak ku ada apa kepikiran kamu mulu. tapi aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
-                            <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
+                            <p style="margin-bottom: 5px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 16px; color: var(--heart-red);">Aku butuh jawaban Kamu:</p>
+                            <div class="form-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="jawaban" value="terima">
+                                    <span class="radio-text"><b>Iya:</b> Ayo kita bangun bareng dari nol.</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="jawaban" value="tolak">
+                                    <span class="radio-text"><b>Tidak:</b> Hapus kontak Aku.</span>
+                                </label>
+                            </div>
+                            <button class="btn-kirim" id="tombolKirim">KIRIM JAWABAN</button>
+                            <div class="footer-text">I'm ready to stay, but prepared to walk away.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="left-cover">
+                        <div class="cover-front">
+                            <h2 style="color: var(--heart-red); font-size: 20px; line-height: 1.2;">Surat dari Arda<br>Untuk Rahayu.</h2>
+                        </div>
+                        <div class="cover-back">
+                            <span class="title-keseriusan">Keseriusan aku!.</span>
+                            <div class="card-content">
+                                <p>Aku nggak suka buang waktu. ga tau di otak ku ada apa kepikiran kamu mulu. tapi aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
+                                <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="heart">❤️</div>
             </div>
-            <div class="heart">❤️</div>
+            <p class="hint" id="teksHint">Tap amplop untuk buka</p>
         </div>
-        <p class="hint" id="teksHint">Tap amplop untuk buka</p>
     </div>
 
     <script>
