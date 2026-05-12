@@ -26,7 +26,6 @@
 
         .container { position: relative; }
 
-        /* --- AMPLOP LANSKAP (FIX: Tinggi dinaikin jadi 280px) --- */
         .envelope-wrapper {
             position: relative; width: 340px; height: 280px;
             background-color: var(--env-back); 
@@ -34,7 +33,6 @@
             transition: transform 0.4s ease 0s;
         }
 
-        /* Tutup Amplop */
         .envelope-lid {
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 170px solid transparent; border-right: 170px solid transparent;
@@ -43,14 +41,12 @@
             transition: transform 0.4s ease 0.8s;
         }
 
-        /* Segitiga Bawah */
         .envelope-front {
             position: absolute; bottom: 0; left: 0; width: 0; height: 0;
             border-left: 170px solid transparent; border-right: 170px solid transparent;
             border-bottom: 155px solid var(--env-front); z-index: 3;
         }
 
-        /* Sisi Kiri & Kanan */
         .envelope-wrapper::before, .envelope-wrapper::after {
             content: ""; position: absolute; z-index: 2; top: 0; width: 0; height: 0;
             border-top: 140px solid transparent; border-bottom: 140px solid transparent;
@@ -58,7 +54,6 @@
         .envelope-wrapper::before { left: 0; border-left: 170px solid #fdfdfd; }
         .envelope-wrapper::after { right: 0; border-right: 170px solid #fdfdfd; }
 
-        /* --- KARTU BUKU (Tinggi 260px, Sembunyi Sempurna) --- */
         .card-wrapper {
             position: absolute; 
             bottom: 10px; left: 90px; 
@@ -103,7 +98,7 @@
             margin-bottom: 8px; text-align: left;
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: var(--heart-red); font-size: 24px; margin: 0 0 6px 0; }
+        h2 { font-family: 'Dancing Script', cursive; color: var(--heart-red); font-size: 22px; margin: 0 0 6px 0; }
         .card-content p { font-family: 'Caveat', cursive; font-size: 14px; line-height: 1.15; color: var(--text-color); margin: 0 0 8px 0; font-weight: 500; }
 
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; margin-bottom: 10px; }
@@ -113,6 +108,7 @@
         }
         .radio-label input { margin: 3px 6px 0 0; accent-color: var(--heart-red); }
         .radio-text { font-family: 'Caveat', cursive; font-size: 14px; line-height: 1.1; color: var(--text-color); font-weight: 700; }
+        
         .btn-kirim {
             width: 100%; background: var(--heart-red); color: white; border: none;
             padding: 10px; font-size: 10px; font-weight: 800; border-radius: 4px;
@@ -128,7 +124,6 @@
         }
         .hint { position: absolute; bottom: -40px; width: 100%; text-align: center; color: #888; font-size: 11px; }
 
-        /* ANIMASI (Ditarik naik lebih tinggi karena amplop makin panjang) */
         .container.open .envelope-lid { transform: rotateX(180deg); z-index: 0; transition: transform 0.4s ease 0s; }
         .container.open .heart { opacity: 0; }
         .container.open .card-wrapper { 
@@ -173,7 +168,7 @@
                         <span class="title-keseriusan">Keseriusan aku!.</span>
                         <div class="card-content">
                             <p>Aku nggak suka buang waktu. ga tau di otak ku ada apa kepikiran kamu mulu. tapi aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
-                            <p>aku butuh jawaban tegas.  aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
+                            <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
                         </div>
                     </div>
                 </div>
@@ -198,7 +193,7 @@
         document.getElementById('tombolKirim').addEventListener('click', () => {
             const pilihan = document.querySelector('input[name="jawaban"]:checked');
             if (!pilihan) { alert('Pilih salah satu dulu, jangan dikosongin.'); return; }
-            let pesanText = pilihan.value === 'terima' ? "aku, Aku milih Iya. Ayo kita coba bangun bareng dari nol." : "Arda, sorry Aku milih TIDAK. Lo boleh hapus kontak Aku sekarang.";
+            let pesanText = pilihan.value === 'terima' ? "Halo Arda, Aku milih Iya. Ayo kita coba jalanin bareng dari nol." : "Halo Arda, maaf Aku milih Tidak. Kamu boleh hapus kontak aku sekarang.";
             const nomorArda = "6289636503978"; 
             window.open(`https://wa.me/${nomorArda}?text=${encodeURIComponent(pesanText)}`, '_blank');
         });
