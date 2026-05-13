@@ -21,32 +21,23 @@
 
         .container { 
             position: relative;
-            transform: scale(0.7); 
+            transform: scale(0.7); /* Scale lebih kecil biar gak kepotong di layar HP mana pun */
         }
 
-        /* --- AMPLOP --- */
+        /* --- AMPLOP (Fixed size) --- */
         .envelope-wrapper {
             width: 320px; height: 250px; background: #eee;
             position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            cursor: pointer;
-            z-index: 2;
         }
 
-        /* --- KERTAS (Udah dibenerin biar fleksibel & nggak luber) --- */
+        /* --- KERTAS (Tinggi Otomatis Ngikutin Teks) --- */
         .card-wrapper {
-            position: absolute; 
-            bottom: 0; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 350px; /* Agak dilebarin biar proporsional */
-            height: auto; /* Biar tinggi otomatis ngikutin teks */
-            min-height: max-content; 
-            background: white; 
-            padding: 20px;
-            box-sizing: border-box;
+            position: absolute; bottom: 0; left: 10px;
+            width: 300px; /* Lebar kertas sama kayak amplop */
+            min-height: 350px; /* Panjangin ke bawah */
+            background: white; padding: 20px;
             transition: transform 0.5s ease;
             z-index: 1;
-            border-radius: 5px;
         }
 
         .card-content {
@@ -55,19 +46,16 @@
             color: #1c1e21;
         }
 
-        /* Animasi naik ngikutin persentase tinggi kertas itu sendiri */
         .container.open .card-wrapper {
-            transform: translate(-50%, -110%); 
+            transform: translateY(-300px); /* Tarik ke atas sampai keluar amplop */
         }
     </style>
 </head>
 <body>
 
-    <!-- Audio Tag buat masukin lagu Skinnyfabs -->
-    <audio id="bg-music" src="Happy - Skinnyfabs.mp3" loop></audio>
-
     <div class="container" id="surat">
-        <div class="envelope-wrapper" id="amplop" onclick="bukaSurat()">
+        <div class="envelope-wrapper" id="amplop" onclick="document.getElementById('surat').classList.toggle('open')">
+            <!-- Amplop visuals -->
             <div style="width:0; height:0; border-left:160px solid transparent; border-right:160px solid transparent; border-top:120px solid #ddd;"></div>
         </div>
         
@@ -78,37 +66,23 @@
                 <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
                 <hr>
                 <p><b>Gue butuh jawaban Kamu:</b></p>
-                <input type="radio" name="jawaban" value="iya" id="iya"> <label for="iya">Iya: Bangun bareng.</label><br>
-                <input type="radio" name="jawaban" value="tidak" id="tidak"> <label for="tidak">Tidak: Hapus kontak.</label><br>
-                <button onclick="kirim()" style="margin-top:10px; width:100%; background:var(--heart-red); color:white; border:none; padding:10px; cursor:pointer; font-weight:bold;">KIRIM JAWABAN</button>
+                <input type="radio" name="jawaban" value="iya"> Iya: Bangun bareng.<br>
+                <input type="radio" name="jawaban" value="tidak"> Tidak: Hapus kontak.<br>
+                <button onclick="kirim()" style="margin-top:10px; width:100%; background:var(--heart-red); color:white; border:none; padding:10px;">KIRIM JAWABAN</button>
             </div>
         </div>
     </div>
 
     <script>
-        function bukaSurat() {
-            const container = document.getElementById('surat');
-            const lagu = document.getElementById('bg-music');
-            
-            container.classList.toggle('open');
-            
-            // Logika play/pause mp3 pas amplop diklik
-            if(container.classList.contains('open')) {
-                lagu.play().catch(err => console.log("Autoplay diblokir browser: " + err));
-            } else {
-                lagu.pause();
-            }
-        }
-
         function kirim() {
             const pilihan = document.querySelector('input[name="jawaban"]:checked');
-            if (!pilihan) { 
-                alert('Pilih dulu!'); 
-                return; 
-            }
+            if (!pilihan) { alert('Pilih dulu!'); return; }
             let pesan = pilihan.value === 'iya' ? "Aku milih Iya." : "Aku milih Tidak.";
             window.open("https://wa.me/6289636503978?text=" + encodeURIComponent(pesan));
         }
     </script>
 </body>
 </html>
+
+
+Tambahin ini di code ya
