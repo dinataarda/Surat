@@ -25,7 +25,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100dvh; /* Pake dvh biar aman di Chrome HP */
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
             perspective: 1200px;
@@ -78,13 +78,13 @@
         /* --- KERTAS SURAT --- */
         .letter {
             position: absolute;
-            bottom: 10px; 
+            bottom: 2px; /* Diturunin biar gak ngintip */
             left: 50%;
             width: 520px;
             display: flex;
             transform-style: preserve-3d;
             transform-origin: 75% bottom; 
-            transform: translateX(-75%) scale(0.45) translateY(0);
+            transform: translateX(-75%) scale(0.38) translateY(0); /* Dikecilin sizenya di dalem amplop */
             z-index: 2; 
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1), box-shadow 0.5s;
             pointer-events: none; 
@@ -167,7 +167,7 @@
         }
 
         .envelope-container.is-pulling .letter {
-            transform: translateX(-75%) scale(0.45) translateY(-500px); 
+            transform: translateX(-75%) scale(0.38) translateY(-500px); /* Scale disamain dengan yg di atas */
             z-index: 5; 
         }
 
@@ -284,7 +284,7 @@
         <div class="envelope-flap"></div>
         <div class="envelope-front"></div>
         
-        <div class="click-hint" id="hint">ALLO,TAP TO OPEN</div>
+        <div class="click-hint" id="hint">ALLO, TAP TO OPEN</div>
 
         <!-- Struktur Kertas 3D -->
         <div class="letter" id="surat">
@@ -402,9 +402,11 @@
                 alert('Pilih salah satu dulu dong. Jangan ngegantung.'); 
                 return; 
             }
+            
+            // Teks disesuaikan pake Aku biar nyambung sama gaya bahasa di surat
             let pesan = pilihan.value === 'iya' 
-                ? "Gue milih Iya. Ayo bangun bareng." 
-                : "Gue milih Tidak. Sesuai janji, silakan hapus kontak gue.";
+                ? "Aku milih Iya. Ayo kita bangun bareng-bareng dari nol." 
+                : "Aku milih Tidak. Sesuai permintaaan, tolong hapus kontakku.";
             
             window.open("https://wa.me/6289636503978?text=" + encodeURIComponent(pesan));
         }
