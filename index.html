@@ -2,87 +2,412 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Serious Message</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #111418;
-            --env-back: #f8f9fa;
-            --heart-red: #d63031;
+            --bg-dark: #111418;
+            --accent-red: #d63031;
+            --paper-white: #fafafa;
+            --read-scale: 1; 
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            margin: 0; height: 100vh; overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            background-color: var(--bg-dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            perspective: 1200px;
         }
 
-        .container { 
+        /* --- BUNGKUS AMPLOP --- */
+        .envelope-container {
             position: relative;
-            transform: scale(0.7); /* Scale lebih kecil biar gak kepotong di layar HP mana pun */
+            width: 320px;
+            height: 220px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
         }
 
-        /* --- AMPLOP (Fixed size) --- */
-        .envelope-wrapper {
-            width: 320px; height: 250px; background: #eee;
-            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* --- KERTAS (Tinggi Otomatis Ngikutin Teks) --- */
-        .card-wrapper {
-            position: absolute; bottom: 0; left: 10px;
-            width: 300px; /* Lebar kertas sama kayak amplop */
-            min-height: 350px; /* Panjangin ke bawah */
-            background: white; padding: 20px;
-            transition: transform 0.5s ease;
+        .envelope-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: #d1d5db;
+            border-radius: 4px;
             z-index: 1;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
-        .card-content {
+        .envelope-front {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid #f3f4f6;
+            border-right: 160px solid #f3f4f6;
+            border-bottom: 120px solid #e5e7eb;
+            border-top: 100px solid transparent;
+            z-index: 3; 
+            border-radius: 0 0 4px 4px;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 130px solid #ffffff;
+            z-index: 4; 
+            transform-origin: top center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.15));
+        }
+
+        /* --- KERTAS SURAT --- */
+        .letter {
+            position: absolute;
+            bottom: 15px; 
+            left: 50%;
+            width: 520px;
+            display: flex;
+            transform-style: preserve-3d;
+            transform-origin: 75% bottom; 
+            transform: translateX(-75%) scale(0.45) translateY(0);
+            z-index: 2; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1), box-shadow 0.5s;
+            pointer-events: none; 
+        }
+
+        .page-left-wrapper, .page-right {
+            width: 260px;
+            flex: none; 
+        }
+
+        .page-right {
+            background: var(--paper-white);
+            padding: 25px;
+            border-radius: 0 4px 4px 0;
+            border-left: 1px dashed #ccc; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .page-left-wrapper {
+            position: relative;
+            transform-style: preserve-3d;
+            transform-origin: right center;
+            transform: rotateY(180deg);
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .page-front {
+            position: relative; 
+            width: 100%; height: 100%;
+            background: var(--paper-white);
+            padding: 25px;
+            border-radius: 4px 0 0 4px;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: rotateY(0deg);
+        }
+
+        .page-back {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #ffffff;
+            border-radius: 4px 0 0 4px;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-left: 1px solid #e5e5e5; 
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.02);
+        }
+
+        /* --- DESAIN SAMPUL --- */
+        .cover-title {
             font-family: 'Caveat', cursive;
-            font-size: 18px; line-height: 1.3;
-            color: #1c1e21;
+            font-size: 32px;
+            color: #1a1a1a;
+            transform: rotate(-5deg);
+        }
+        .cover-heart {
+            color: var(--accent-red);
+            font-size: 24px;
+            margin-top: 10px;
+            animation: beat 1.5s infinite;
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
         }
 
-        .container.open .card-wrapper {
-            transform: translateY(-300px); /* Tarik ke atas sampai keluar amplop */
+        /* --- FASE ANIMASI --- */
+        .envelope-container.is-open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1; 
+        }
+
+        .envelope-container.is-pulling .letter {
+            transform: translateX(-75%) scale(0.45) translateY(-500px); 
+            z-index: 5; 
+        }
+
+        .envelope-container.is-reading .letter {
+            transform: translateX(-75%) scale(var(--read-scale)) translateY(-150px);
+            box-shadow: 10px 20px 40px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .envelope-container.is-unfolded .letter {
+            transform-origin: 50% bottom;
+            transform: translateX(-50%) scale(var(--read-scale)) translateY(-150px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            pointer-events: auto; 
+        }
+        .envelope-container.is-unfolded .page-left-wrapper {
+            transform: rotateY(0deg); 
+        }
+        
+        .envelope-container.is-reading .envelope-back,
+        .envelope-container.is-reading .envelope-front,
+        .envelope-container.is-reading .envelope-flap {
+            opacity: 0.2; 
+        }
+
+        /* --- DESAIN ISI SURAT --- */
+        .text-content {
+            font-family: 'Caveat', cursive;
+            font-size: 17px; 
+            line-height: 1.25;
+            color: #1a1a1a;
+        }
+        .title {
+            color: var(--accent-red);
+            font-weight: 700;
+            text-decoration: underline;
+            font-size: 21px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            font-family: 'Caveat', cursive;
+            color: var(--accent-red);
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .option {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .option input {
+            accent-color: var(--accent-red);
+            width: 18px; height: 18px;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .option-text {
+            font-family: 'Caveat', cursive;
+            font-size: 17px;
+            line-height: 1.2;
+        }
+        button {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        button:active { transform: scale(0.95); }
+        .footer-note {
+            font-size: 10px;
+            font-style: italic;
+            color: #999;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .click-hint {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="surat">
-        <div class="envelope-wrapper" id="amplop" onclick="document.getElementById('surat').classList.toggle('open')">
-            <!-- Amplop visuals -->
-            <div style="width:0; height:0; border-left:160px solid transparent; border-right:160px solid transparent; border-top:120px solid #ddd;"></div>
-        </div>
+    <!-- File Audio Lo: Mutar terus (loop) pas dibuka -->
+    <audio id="bgLagu" src="Happy - Skinnyfabs.mp3" loop preload="auto"></audio>
+
+    <!-- Trigger utama nempel di container biar bisa bolak-balik -->
+    <div class="envelope-container" id="envContainer" onclick="toggleSurat(event)">
+        <div class="envelope-back"></div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-front"></div>
         
-        <div class="card-wrapper">
-            <div class="card-content">
-                <span style="color:var(--heart-red); text-decoration:underline; font-weight:bold;">Keseriusan aku!</span>
-                <p>Aku nggak suka buang waktu. ga tau di otak ku ada apa kepikiran kamu mulu. tapi aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
-                <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
-                <hr>
-                <p><b>Gue butuh jawaban Kamu:</b></p>
-                <input type="radio" name="jawaban" value="iya"> Iya: Bangun bareng.<br>
-                <input type="radio" name="jawaban" value="tidak"> Tidak: Hapus kontak.<br>
-                <button onclick="kirim()" style="margin-top:10px; width:100%; background:var(--heart-red); color:white; border:none; padding:10px;">KIRIM JAWABAN</button>
+        <div class="click-hint" id="hint">ALLO,TAP TO OPEN</div>
+
+        <!-- Struktur Kertas 3D -->
+        <div class="letter" id="surat">
+            
+            <!-- Sisi Kiri (Engsel + Teks) -->
+            <div class="page-left-wrapper">
+                <div class="page-back">
+                    <div class="cover-title">From for Rahayu</div>
+                    <div class="cover-heart">❤</div>
+                </div>
+
+                <div class="page-front">
+                    <div class="text-content">
+                        <span class="title">Keseriusan Aku!.</span>
+                        <p>Aku nggak suka buang waktu buat hal yang nggak pasti. Aku ga tau kenapa, otak ku itu kadang keinget Kamu dan sangat ganggu banget aktivitas Aku. tapi Aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
+                        <p>Aku butuh jawaban tegas. Aku mau kita mulai bangun semuanya bareng dari sekarang kalau Kamu emang mau serius untuk hal ini. Tapi kalau Kamu nggak yakin, merasa keberatan untuk untuk menerima ini. tolong please hapus kontak Aku. Aku harus fokus sama aktifitas Aku. Take it or leave it.</p>
+                    </div>
+                </div>
             </div>
+
+            <!-- Sisi Kanan (Form Jawaban) -->
+            <div class="page-right">
+                <div class="subtitle">Aku butuh jawaban Tegas Kamu:</div>
+                
+                <label class="option">
+                    <input type="radio" name="jawaban" value="iya">
+                    <div class="option-text">
+                        <span style="color:var(--accent-red); font-weight:bold;">Iya:</span> Ayo kita bangun bareng dari nol.
+                    </div>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="jawaban" value="tidak">
+                    <div class="option-text">
+                        <span style="color:var(--accent-red); font-weight:bold;">Tidak:</span> Hapus kontak dan please jangan pernah kontak lagi.
+                    </div>
+                </label>
+
+                <button onclick="kirimWA()">Kirim Jawaban</button>
+                
+                <div class="footer-note">
+                    I'm ready to stay, but prepared to walk away.
+                </div>
+            </div>
+            
         </div>
     </div>
 
     <script>
-        function kirim() {
+        // Status: 0 = nutup, 1 = lagi proses animasi, 2 = full kebuka
+        let statusAnimasi = 0; 
+        let laguUdahMuter = false;
+
+        function toggleSurat(event) {
+            // Cegah surat ketutup kalau dia lagi tap/milih jawaban di form sisi kanan
+            if (event && event.target.closest('.page-right')) {
+                return; 
+            }
+
+            // Kalo animasi masih jalan, blokir klik biar gak nge-bug
+            if (statusAnimasi === 1) return; 
+
+            const container = document.getElementById('envContainer');
+            const lagu = document.getElementById('bgLagu');
+            
+            if (statusAnimasi === 0) {
+                // --- FASE BUKA ---
+                statusAnimasi = 1;
+                document.getElementById('hint').style.display = 'none';
+
+                // Play Audio di klik pertama
+                if (!laguUdahMuter) {
+                    lagu.play().catch(err => console.log("Auto-play diblokir browser, aman."));
+                    laguUdahMuter = true;
+                }
+
+                const screenWidth = window.innerWidth;
+                const scale = screenWidth < 550 ? (screenWidth * 0.95) / 520 : 1;
+                document.documentElement.style.setProperty('--read-scale', scale);
+
+                container.classList.add('is-open');
+
+                setTimeout(() => container.classList.add('is-pulling'), 500); 
+                setTimeout(() => container.classList.add('is-reading'), 1000);
+                setTimeout(() => {
+                    container.classList.add('is-unfolded');
+                    statusAnimasi = 2; // Ubah status jadi siap ditutup
+                }, 1800); 
+
+            } else if (statusAnimasi === 2) {
+                // --- FASE TUTUP (Animasi Kebalikan) ---
+                statusAnimasi = 1;
+
+                container.classList.remove('is-unfolded'); // Lipat balik
+
+                setTimeout(() => {
+                    container.classList.remove('is-reading'); // Mundur
+                }, 800); 
+
+                setTimeout(() => {
+                    container.classList.remove('is-pulling'); // Masuk ke amplop
+                }, 1300); 
+
+                setTimeout(() => {
+                    container.classList.remove('is-open'); // Amplop ketutup
+                    document.getElementById('hint').style.display = 'block'; // Teks TAP muncul lagi
+                    statusAnimasi = 0; // Balik ke nol, siap dibuka lagi
+                }, 1800);
+            }
+        }
+
+        function kirimWA() {
             const pilihan = document.querySelector('input[name="jawaban"]:checked');
-            if (!pilihan) { alert('Pilih dulu!'); return; }
-            let pesan = pilihan.value === 'iya' ? "Aku milih Iya." : "Aku milih Tidak.";
+            if (!pilihan) { 
+                alert('Pilih salah satu dulu dong. Jangan ngegantung.'); 
+                return; 
+            }
+            let pesan = pilihan.value === 'iya' 
+                ? "Gue milih Iya. Ayo bangun bareng." 
+                : "Gue milih Tidak. Sesuai janji, silakan hapus kontak gue.";
+            
             window.open("https://wa.me/6289636503978?text=" + encodeURIComponent(pesan));
         }
     </script>
 </body>
 </html>
-
-
-Tambahin ini di code ya
