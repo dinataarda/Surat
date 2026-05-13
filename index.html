@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Serious Message</title>
+    <title>Keseriusan Arda</title>
+    <!-- Import font -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
@@ -24,6 +25,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Skala layout di-lock biar gak kepotong di browser HP manapun */
         .main-wrapper {
             transform: scale(0.75); 
             display: flex; justify-content: center; align-items: center;
@@ -31,9 +33,9 @@
 
         .container { position: relative; }
 
-        /* --- AMPLOP --- */
+        /* --- AMPLOP LANSKAP (Rasio pas: 340px x 250px) --- */
         .envelope-wrapper {
-            position: relative; width: 340px; height: 320px;
+            position: relative; width: 340px; height: 250px;
             background-color: var(--env-back); 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             transition: transform 0.4s ease;
@@ -42,7 +44,7 @@
         .envelope-lid {
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 170px solid transparent; border-right: 170px solid transparent;
-            border-top: 175px solid var(--env-lid); z-index: 5;
+            border-top: 140px solid var(--env-lid); z-index: 5;
             transform-origin: top; 
             transition: transform 0.4s ease 0.8s;
         }
@@ -50,21 +52,21 @@
         .envelope-front {
             position: absolute; bottom: 0; left: 0; width: 0; height: 0;
             border-left: 170px solid transparent; border-right: 170px solid transparent;
-            border-bottom: 170px solid var(--env-front); z-index: 3;
+            border-bottom: 140px solid var(--env-front); z-index: 3;
         }
 
         .envelope-wrapper::before, .envelope-wrapper::after {
             content: ""; position: absolute; z-index: 2; top: 0; width: 0; height: 0;
-            border-top: 160px solid transparent; border-bottom: 160px solid transparent;
+            border-top: 125px solid transparent; border-bottom: 125px solid transparent;
         }
         .envelope-wrapper::before { left: 0; border-left: 170px solid #fdfdfd; }
         .envelope-wrapper::after { right: 0; border-right: 170px solid #fdfdfd; }
 
-        /* --- KARTU BUKU --- */
+        /* --- KARTU BUKU (Tinggi 235px, dijamin muat teks lo) --- */
         .card-wrapper {
             position: absolute; 
             bottom: 10px; left: 90px; 
-            width: 160px; height: 300px; 
+            width: 160px; height: 235px; 
             perspective: 1200px; z-index: 1; 
             transition: transform 0.4s ease 0.4s, z-index 0s 0.45s, box-shadow 0.4s ease 0.4s; 
         }
@@ -72,10 +74,12 @@
         .right-page, .cover-front, .cover-back {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--card-color); 
-            padding: 12px 10px; box-sizing: border-box;
+            padding: 15px 12px; 
+            box-sizing: border-box;
             transform: translateZ(0); 
         }
 
+        /* Halaman Kanan (Form): Center vertikal */
         .right-page { 
             border-left: 1px solid #eee; 
             display: flex; flex-direction: column; justify-content: center;
@@ -92,80 +96,93 @@
             border-right: 1px solid rgba(0,0,0,0.1); text-align: center; backface-visibility: hidden;
         }
 
+        /* Halaman Kiri (Teks): Flex start biar natural dari atas ke bawah */
         .cover-back { 
             transform: rotateY(180deg) translateZ(0); 
             border-right: 1px solid #eee; backface-visibility: hidden; 
             display: flex; flex-direction: column; justify-content: flex-start;
-            padding-top: 15px;
+            padding-top: 15px; /* Jarak aman dari atas */
         }
 
-        /* --- TYPOGRAPHY --- */
+        /* --- JUDUL "Keseriusan." (Ngalir Natural) --- */
         .title-keseriusan {
-            font-family: 'Caveat', cursive; font-size: 15px; color: var(--heart-red);
-            font-weight: 700; text-decoration: underline; display: block;
-            margin-bottom: 6px; text-align: left;
+            font-family: 'Caveat', cursive;
+            font-size: 16px;
+            color: var(--heart-red);
+            font-weight: 700;
+            text-decoration: underline;
+            display: block;
+            margin-bottom: 8px; /* Jarak aman ke paragraf pertama */
+            text-align: left;
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: var(--heart-red); font-size: 20px; margin: 0 0 6px 0; }
+        /* --- TIPOGRAFI --- */
+        h2 { font-family: 'Dancing Script', cursive; color: var(--heart-red); font-size: 24px; margin: 0 0 6px 0; }
         
+        /* Ukuran font Caveat dipasin biar enak dibaca & gak luber */
         .card-content p { 
-            font-family: 'Caveat', cursive; font-size: 13px; 
-            line-height: 1.15 !important; color: var(--text-color); 
-            margin: 0 0 6px 0; font-weight: 500; 
+            font-family: 'Caveat', cursive;
+            font-size: 14px; 
+            line-height: 1.15; 
+            color: var(--text-color); 
+            margin: 0 0 8px 0; 
+            font-weight: 500;
         }
 
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-top: 5px; margin-bottom: 8px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; margin-bottom: 10px; }
         .radio-label {
             display: flex; align-items: flex-start; cursor: pointer;
-            background: #fdfdfd; border: 1px solid #e0e0e0; padding: 5px; border-radius: 4px;
+            background: #fdfdfd; border: 1px solid #e0e0e0; padding: 6px; border-radius: 4px;
         }
         .radio-label input { margin: 3px 6px 0 0; accent-color: var(--heart-red); }
-        .radio-text { font-family: 'Caveat', cursive; font-size: 13px; line-height: 1.1; color: var(--text-color); font-weight: 700; }
         
+        .radio-text { 
+            font-family: 'Caveat', cursive;
+            font-size: 14px; 
+            line-height: 1.1; 
+            color: var(--text-color);
+            font-weight: 700;
+        }
+        .radio-text b { color: var(--heart-red); }
+
         .btn-kirim {
             width: 100%; background: var(--heart-red); color: white; border: none;
-            padding: 8px; font-size: 10px; font-weight: 800; border-radius: 4px;
+            padding: 10px; font-size: 10px; font-weight: 800; border-radius: 4px;
             cursor: pointer; font-family: 'Poppins', sans-serif;
             box-shadow: 0 2px 5px rgba(214, 48, 49, 0.3);
-            margin-top: 4px;
         }
 
-        /* TOMBOL MUSIK INTERNAL (FIX UNTUK FILE LOKAL GITHUB) */
-        .btn-musik-toggle {
-            display: block; width: 100%; background: #2d3436; color: white; 
-            text-align: center; padding: 6px; font-size: 9px; font-weight: 600; 
-            border-radius: 4px; border: none; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 6px; box-sizing: border-box;
+        .footer-text {
+            font-family: 'Caveat', cursive;
+            margin-top: 12px; font-weight: 700; font-size: 12px; color: #888; 
+            text-align: center;
         }
-        .btn-musik-toggle.playing { background: #1DB954; /* Warna Ijo Spotify kalau muter */ }
-
-        .footer-text { font-family: 'Caveat', cursive; margin-top: 8px; font-weight: 700; font-size: 11px; color: #888; text-align: center; }
 
         .heart {
-            position: absolute; top: 150px; left: 50%; transform: translate(-50%, -20%);
+            position: absolute; top: 120px; left: 50%; transform: translate(-50%, -20%);
             z-index: 6; color: var(--heart-red); font-size: 38px; transition: opacity 0.3s; pointer-events: none;
         }
-        .hint { position: absolute; bottom: -50px; width: 100%; text-align: center; color: #888; font-size: 11px; }
+        .hint { position: absolute; bottom: -40px; width: 100%; text-align: center; color: #888; font-size: 11px; }
 
         /* --- LOGIKA ANIMASI BUKA --- */
         .container.open .envelope-lid { transform: rotateX(180deg); z-index: 0; transition: transform 0.4s ease 0s; }
         .container.open .heart { opacity: 0; }
+        
+        /* Ditarik naik ke -165px biar passss banget sama proporsi amplop */
         .container.open .card-wrapper { 
-            transform: translateY(-220px); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
+            transform: translateY(-165px); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
             transition: transform 0.4s ease 0.4s, z-index 0s 0.7s, box-shadow 0.4s ease 0.4s; 
         }
+        
         .container.open .left-cover { transform: rotateY(-180deg); transition: transform 0.4s ease 0.8s; }
         .container.open .envelope-wrapper { transform: translateX(80px); transition: transform 0.4s ease 0.8s; }
     </style>
 </head>
 <body>
 
-    <!-- TAG AUDIO INTERNAL (FIX UNTUK FILE LOKAL GITHUB) -->
-    <!-- JANGAN LUPA: Upload file 'Happy - Skinnyfabs.mp3' ke folder GitHub lo! -->
-    <audio id="playerMusik" loop preload="metadata">
-        <source src="Happy - Skinnyfabs.mp3" type="audio/mpeg">
-        Browser kamu nggak support audio tag.
+    <!-- Ganti link lagu Happy-Skinnyfabs di bawah ini -->
+    <audio id="happyMusic" loop preload="auto">
+        <source src="LINK_LAGU_HAPPY_SKINNYFABS_KAMU_DISINI.mp3" type="audio/mpeg">
     </audio>
 
     <div class="main-wrapper">
@@ -175,128 +192,87 @@
                 <div class="envelope-front"></div>
                 
                 <div class="card-wrapper">
-                    <!-- HALAMAN KANAN (FORM & KONTROL MUSIK) -->
+                    
+                    <!-- HALAMAN KANAN (FORM) -->
                     <div class="right-page">
                         <div class="card-content">
-                            <p style="margin-bottom: 5px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 15px; color: var(--heart-red);">Aku butuh jawaban Kamu:</p>
+                            <p style="margin-bottom: 5px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 16px; color: var(--heart-red);">Gue butuh jawaban lo:</p>
+                            
                             <div class="form-group">
                                 <label class="radio-label">
                                     <input type="radio" name="jawaban" value="terima">
-                                    <span class="radio-text"><b>Iya:</b> Ayo kita bangun bareng dari nol.</span>
+                                    <span class="radio-text"><b>IYA:</b> Ayo kita bangun bareng dari nol.</span>
                                 </label>
                                 <label class="radio-label">
                                     <input type="radio" name="jawaban" value="tolak">
-                                    <span class="radio-text"><b>Tidak:</b> Hapus kontak Aku.</span>
-                                000</label>
+                                    <span class="radio-text"><b>TIDAK:</b> Hapus kontak gue.</span>
+                                </label>
                             </div>
                             
                             <button class="btn-kirim" id="tombolKirim">KIRIM JAWABAN</button>
-                            
-                            <!-- Tombol Toggle Musik Seamless -->
-                            <button id="btnToggleMusik" class="btn-musik-toggle">▶ Putar Musik Background</button>
-                            
                             <div class="footer-text">I'm ready to stay, but prepared to walk away.</div>
                         </div>
                     </div>
                     
-                    <!-- HALAMAN KIRI (TEKS) -->
+                    <!-- HALAMAN KIRI (TEKS ASLI) -->
                     <div class="left-cover">
                         <div class="cover-front">
-                            <h2 style="color: var(--heart-red); font-size: 20px; line-height: 1.2;">Surat dari Arda<br>Untuk Rahayu.</h2>
+                            <h2 style="color: var(--heart-red); font-size: 22px; line-height: 1.2;">A serious message<br>From Arda.</h2>
                         </div>
                         <div class="cover-back">
-                            <span class="title-keseriusan">Keseriusan aku!.</span>
+                            <!-- JUDUL KESERIUSAN -->
+                            <span class="title-keseriusan">Keseriusan.</span>
+                            
                             <div class="card-content">
-                                <p>Aku nggak suka buang waktu. ga tau di otak ku ada apa kepikiran kamu mulu. tapi aku nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
-                                <p>aku butuh jawaban tegas. aku mau kita mulai bangun semuanya bareng dari sekarang. kalau kamu emang mau serius. Tapi kalau kamu nggak yakin, keberatan buat nerima ini. please tolong hapus kontak aku. aku harus fokus. Take it or leave it.</p>
+                                <p>Aku nggak suka buang waktu buat hal yang nggak pasti. Dari awal Aku emang tertarik sama lo, tapi gue nggak mau kejebak di zona abu-abu yang nggak ada ujungnya kayak gini.</p>
+                                <p>Gue butuh jawaban tegas. Gue mau kita mulai bangun semuanya bareng dari sekarang kalau lo emang mau serius. Tapi kalau lo nggak yakin, tolong hapus kontak gue. Gue harus fokus. Take it or leave it.</p>
                             </div>
                         </div>
                     </div>
+
                 </div>
+                
                 <div class="heart">❤️</div>
             </div>
             <p class="hint" id="teksHint">Tap amplop untuk buka</p>
         </div>
     </div>
 
-    <!-- Script Library Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
     <script>
         const suratArda = document.getElementById('suratArda');
         const amplop = document.getElementById('amplop');
         const teksHint = document.getElementById('teksHint');
-        const playerMusik = document.getElementById('playerMusik');
-        const btnToggleMusik = document.getElementById('btnToggleMusik');
+        const happyMusic = document.getElementById('happyMusic');
 
-        // Logika Buka Amplop & MUTER MUSIK OTOMATIS (Romantis!)
+        // Buka surat
         amplop.addEventListener('click', (e) => {
-            // Cek biar nggak konflik sama input form
             if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'LABEL') {
-                
-                const isOpening = !suratArda.classList.contains('open');
                 suratArda.classList.toggle('open');
                 teksHint.style.display = suratArda.classList.contains('open') ? 'none' : 'block';
-
-                // JIKA DIBUKA: Coba putar musik otomatis (kebanyakan browser HP blokir autoplay)
-                if (isOpening) {
-                    playerMusik.play().then(() => {
-                        // Kalau autoplay berhasil
-                        btnToggleMusik.textContent = "⏸ Pause Musik";
-                        btnToggleMusik.classList.add('playing');
-                    }).catch(error => {
-                        // Kalau diblokir browser, nggak apa-apa, Rahayu tinggal klik tombol di form
-                        console.log("Autoplay diblokir browser, butuh interaksi user.");
-                    });
-                }
             }
         });
 
-        // Logika Tombol Toggle Musik (Di Form)
-        btnToggleMusik.addEventListener('click', () => {
-            if (playerMusik.paused) {
-                playerMusik.play();
-                btnToggleMusik.textContent = "⏸ Pause Musik";
-                btnToggleMusik.classList.add('playing');
-            } else {
-                playerMusik.pause();
-                btnToggleMusik.textContent = "▶ Putar Musik Background";
-                btnToggleMusik.classList.remove('playing');
-            }
-        });
-
-
-        // Logika Tombol Kirim WA & Confetti
+        // WhatsApp redirect
         document.getElementById('tombolKirim').addEventListener('click', () => {
             const pilihan = document.querySelector('input[name="jawaban"]:checked');
-            if (!pilihan) { 
-                alert('Pilih salah satu dulu, jangan dikosongin.'); 
-                return; 
-            }
-
-            let pesanText = "";
-            let delayWaktu = 0;
-
-            if (pilihan.value === 'terima') {
-                pesanText = "Halo Arda, Aku milih Iya. Ayo kita coba jalanin bareng dari nol.";
-                // Efek Confetti Meledak (Merah Hati)
-                confetti({
-                    particleCount: 150,
-                    spread: 80,
-                    origin: { y: 0.6 },
-                    colors: ['#d63031', '#ff7675', '#ffffff']
-                });
-                delayWaktu = 2000; 
-            } else {
-                pesanText = "Halo Arda, maaf Aku milih Tidak. Kamu boleh hapus kontak aku sekarang.";
-                delayWaktu = 0; 
-            }
-
-            const nomorArda = "6289636503978"; 
             
-            setTimeout(() => {
-                window.open(`https://wa.me/${nomorArda}?text=${encodeURIComponent(pesanText)}`, '_blank');
-            }, delayWaktu);
+            if (!pilihan) {
+                alert('Pilih salah satu dulu, jangan dikosongin.');
+                return;
+            }
+
+            let pesanText = pilihan.value === 'terima' ? "Arda, gue milih IYA. Ayo kita coba bangun bareng dari nol." : "Arda, sorry gue milih TIDAK. Lo boleh hapus kontak gue sekarang.";
+            const nomorArda = "6289636503978"; 
+            window.open(`https://wa.me/${nomorArda}?text=${encodeURIComponent(pesanText)}`, '_blank');
+        });
+
+        // Otomatis mulai musik
+        window.addEventListener('DOMContentLoaded', (event) => {
+            happyMusic.play().catch(function(error) {
+                // Browser suka blokir auto-play, jadi kasih opsi buat user
+                console.log("Auto-play blocked, user interaction required.");
+                alert("Browser memblokir auto-play. Klik 'OK' lalu tap layar untuk dengerin lagu 'Happy - Skinnyfabs'");
+            });
         });
     </script>
 </body>
